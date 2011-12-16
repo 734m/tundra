@@ -17,6 +17,10 @@
   CMMotionManager *motionManager;
   NSOperationQueue  *opQ;
   CMGyroHandler gyroHandler;
+  double filteredAcceleration[3];
+  NSOperationQueue *accQ;
+  CMAccelerometerHandler accHandler;
+  CMDeviceMotionHandler motionHandler;
   
 }
 @property (nonatomic, retain) AVCaptureSession * torchSession;
@@ -52,8 +56,8 @@
 
 - (void)viewDidLoad
 {
-  [super viewDidLoad];
   [self becomeFirstResponder];
+  [super viewDidLoad];
   self.view.backgroundColor = [UIColor blackColor];
   
   [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
@@ -98,36 +102,60 @@
   
   
   // Set up motion
-  
+//  
   motionManager = [[CMMotionManager alloc] init];
-  motionManager.gyroUpdateInterval = 1.0/60.0;
-  if (motionManager.gyroAvailable) {
-    opQ = [NSOperationQueue currentQueue];
-    gyroHandler = ^ (CMGyroData *gyroData, NSError *error) {
-      CMRotationRate rotate = gyroData.rotationRate;
-      NSLog(@"%f, %f, %f", rotate.x, rotate.y, rotate.z);
-      if(fabs(rotate.y) > 1.0) {
-        [self start:self];
-      } else {
-        [self stop:self];
-      }
-      // handle rotation-rate data here......
-    };
-  } else {
-    NSLog(@"No gyroscope on device.");
-  }
-  [motionManager startGyroUpdatesToQueue:opQ withHandler:gyroHandler];
   
-}
+  if (motionManager.deviceMotionAvailable) {
+    motionHandler = ^ (CMDeviceMotion *motion, NSError *error) {
+      CMAttitude *a = motion.attitude;
+      NSLog(@"%f, %f, %f", a.roll, a.pitch, a.yaw);
+    };
+    [motionManager startDeviceMotionUpdatesToQueue:opQ withHandler:motionHandler];
+  }
+  
+  
+  
+  
+  
+//  motionManager.gyroUpdateInterval = 1.0/60.0;
+//  if (motionManager.gyroAvailable) {
+//    opQ = [NSOperationQueue currentQueue];
+//    gyroHandler = ^ (CMGyroData *gyroData, NSError *error) {
+//      
+//      CMRotationRate rotate = gyroData.rotationRate;
+////      NSLog(@"%f, %f, %f", rotate.x, rotate.y, rotate.z);
+//      if(fabs(rotate.y) > 1.0) {
+////        [self start:self];
+//      } else {
+////        [self stop:self];
+//      }
+//      // handle rotation-rate data here......
+//    };
+//  } else {
+//    NSLog(@"No gyroscope on device.");
+//  }
+//  motionManager.accelerometerUpdateInterval = 0.5;
+//  memset(filteredAcceleration, 0, sizeof(filteredAcceleration));
+//  if (motionManager.accelerometerAvailable) {
+//    accHandler = ^ (CMAccelerometerData *accData, NSError *error) {
+//      CMAcceleration acc = accData.acceleration;
+//      NSLog(@"%f, %f, %f", acc.x, acc.y, acc.z);
+//      if (fabs(acc.x) > 0.5) {
+//        [self start:self];
+//      } else {
+//        [self stop:self];
+//      }
+//    };
+//  }
+//
+//  [motionManager startAccelerometerUpdatesToQueue:opQ withHandler:accHandler];
+//  [motionManager startGyroUpdatesToQueue:opQ withHandler:gyroHandler];
+  
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-  return NO;
 }
 
 - (void)viewDidUnload
 {
-  [motionManager stopGyroUpdates];
-
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -155,19 +183,21 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    // Return YES for supported orientations
-  if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-      return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-  } else {
-      return YES;
-  }
+  return (interfaceOrientation == UIInterfaceOrientationPortrait );
+//  return NO;
+//    // Return YES for supported orientations
+//  if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+//      return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+//  } else {
+//      return YES;
+//  }
 }
 
 #pragma mark - torch stuff
 
 - (IBAction)start:(id)sender {
   self.view.backgroundColor = [UIColor colorWithWhite:0.2f alpha:1.0f];
-  NSLog(@"start");
+//  NSLog(@"start");
 	Class captureDeviceClass = NSClassFromString(@"AVCaptureDevice");
 	if (captureDeviceClass != nil) {
     
@@ -183,7 +213,7 @@
 
 - (IBAction)stop:(id)sender {
   self.view.backgroundColor = [UIColor blackColor];
-  NSLog(@"stop");
+//  NSLog(@"stop");
 	Class captureDeviceClass = NSClassFromString(@"AVCaptureDevice");
 	if (captureDeviceClass != nil) 
 	{
