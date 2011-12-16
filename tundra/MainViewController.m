@@ -37,7 +37,8 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
+  [super viewDidLoad];
+  self.view.backgroundColor = [UIColor blackColor];
   
   Class captureDeviceClass = NSClassFromString(@"AVCaptureDevice");
   if (captureDeviceClass != nil) 
@@ -156,6 +157,7 @@
 #pragma mark - torch stuff
 
 - (IBAction)start:(id)sender {
+  self.view.backgroundColor = [UIColor whiteColor];
   NSLog(@"start");
 	Class captureDeviceClass = NSClassFromString(@"AVCaptureDevice");
 	if (captureDeviceClass != nil) {
@@ -171,6 +173,7 @@
 }
 
 - (IBAction)stop:(id)sender {
+  self.view.backgroundColor = [UIColor blackColor];
   NSLog(@"stop");
 	Class captureDeviceClass = NSClassFromString(@"AVCaptureDevice");
 	if (captureDeviceClass != nil) 
