@@ -133,7 +133,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0420;
-				ORGANIZATIONNAME = "Lumber Labs Inc";
+				ORGANIZATIONNAME = 734m;
 			};
 			buildConfigurationList = 844A2B1C149AF18A00AF1E00 /* Build configuration list for PBXProject "tundra" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -295,6 +295,7 @@
 				844A2B48149AF18A00AF1E00 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
