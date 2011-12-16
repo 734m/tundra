@@ -9,14 +9,21 @@
 #import "MainViewController.h"
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import <CoreMotion/CoreMotion.h>
 
 @interface MainViewController () {
   AVCaptureSession *torchSession;
   AVCaptureDevice *device;
+  CMMotionManager *motionManager;
+  NSOperationQueue  *opQ;
+  CMGyroHandler gyroHandler;
   
 }
 @property (nonatomic, retain) AVCaptureSession * torchSession;
 @property (nonatomic, retain) AVCaptureDevice * device;
+@property (nonatomic, retain) CMMotionManager *motionManager;
+@property (nonatomic, retain) NSOperationQueue *opQ;
+@property (nonatomic, retain) CMGyroHandler gyroHandler;
 - (void) toggleTorch;
 
 @end
@@ -26,6 +33,9 @@
 @synthesize flipsidePopoverController = _flipsidePopoverController;
 @synthesize torchSession;
 @synthesize device;
+@synthesize motionManager;
+@synthesize opQ;
+@synthesize gyroHandler;
 
 - (void)didReceiveMemoryWarning
 {
@@ -35,10 +45,18 @@
 
 #pragma mark - View lifecycle
 
+- (BOOL)canBecomeFirstResponder {
+  return YES;
+}
+
+
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+  [self becomeFirstResponder];
   self.view.backgroundColor = [UIColor blackColor];
+  
+  [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
   
   Class captureDeviceClass = NSClassFromString(@"AVCaptureDevice");
   if (captureDeviceClass != nil) 
@@ -78,47 +96,38 @@
 		NSLog(@"Torch not available, AVCaptureDevice class not found.");
 	}
   
-//  device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-//  
-//  if ([device hasTorch] && [device hasFlash]){
-//    
-//    if (device.torchMode == AVCaptureTorchModeOff) {
-//      
-//      NSLog(@"It's currently off.. turning on now.");
-//      
-//      AVCaptureDeviceInput *flashInput = [AVCaptureDeviceInput deviceInputWithDevice:device error: nil];
-//      AVCaptureVideoDataOutput *output = [[AVCaptureVideoDataOutput alloc] init];
-//      
-//      AVCaptureSession *session = [[AVCaptureSession alloc] init];
-//      
-//      [session beginConfiguration];
-//      [device lockForConfiguration:nil];
-//            
-//      [session addInput:flashInput];
-//      [session addOutput:output];
-//      
-//      [device unlockForConfiguration];
-//      
-//      
-//      [session commitConfiguration];
-//      [session startRunning];
-//      
-//      [self setTorchSession:session];
-//    }
-//    else {
-//      
-//      NSLog(@"It's currently on.. turning off now.");
-//      
-//      [torchSession stopRunning];
-//      
-//    }
-//    
-//  }
+  
+  // Set up motion
+  
+  motionManager = [[CMMotionManager alloc] init];
+  motionManager.gyroUpdateInterval = 1.0/60.0;
+  if (motionManager.gyroAvailable) {
+    opQ = [NSOperationQueue currentQueue];
+    gyroHandler = ^ (CMGyroData *gyroData, NSError *error) {
+      CMRotationRate rotate = gyroData.rotationRate;
+      NSLog(@"%f, %f, %f", rotate.x, rotate.y, rotate.z);
+      if(fabs(rotate.y) > 1.0) {
+        [self start:self];
+      } else {
+        [self stop:self];
+      }
+      // handle rotation-rate data here......
+    };
+  } else {
+    NSLog(@"No gyroscope on device.");
+  }
+  [motionManager startGyroUpdatesToQueue:opQ withHandler:gyroHandler];
+  
+}
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+  return NO;
 }
 
 - (void)viewDidUnload
 {
+  [motionManager stopGyroUpdates];
+
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -157,7 +166,7 @@
 #pragma mark - torch stuff
 
 - (IBAction)start:(id)sender {
-  self.view.backgroundColor = [UIColor whiteColor];
+  self.view.backgroundColor = [UIColor colorWithWhite:0.2f alpha:1.0f];
   NSLog(@"start");
 	Class captureDeviceClass = NSClassFromString(@"AVCaptureDevice");
 	if (captureDeviceClass != nil) {
@@ -193,6 +202,25 @@
   [device setFlashMode:AVCaptureFlashModeOn];
   [device unlockForConfiguration];
 }
+
+#pragma mark - motion
+
+- (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event
+{
+  [self start:self];
+}
+
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
+{
+  [self stop:self];
+}
+
+- (void)motionCancelled:(UIEventSubtype)motion withEvent:(UIEvent *)event
+{
+  [self stop:self];
+}
+
+
 
 #pragma mark - Flipside View Controller
 
