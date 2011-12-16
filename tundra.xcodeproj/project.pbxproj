@@ -24,17 +24,17 @@
 		844A2B26149AF18A00AF1E00 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		844A2B28149AF18A00AF1E00 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		844A2B2A149AF18A00AF1E00 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		844A2B2E149AF18A00AF1E00 /* tundra-Info.plist */ = {isa = PBXFileReference; path = "tundra-Info.plist"; sourceTree = "<group>"; };
+		844A2B2E149AF18A00AF1E00 /* tundra-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "tundra-Info.plist"; sourceTree = "<group>"; };
 		844A2B30149AF18A00AF1E00 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		844A2B32149AF18A00AF1E00 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		844A2B34149AF18A00AF1E00 /* tundra-Prefix.pch */ = {isa = PBXFileReference; path = "tundra-Prefix.pch"; sourceTree = "<group>"; };
-		844A2B35149AF18A00AF1E00 /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		844A2B34149AF18A00AF1E00 /* tundra-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "tundra-Prefix.pch"; sourceTree = "<group>"; };
+		844A2B35149AF18A00AF1E00 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		844A2B36149AF18A00AF1E00 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		844A2B39149AF18A00AF1E00 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		844A2B3C149AF18A00AF1E00 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
-		844A2B3E149AF18A00AF1E00 /* MainViewController.h */ = {isa = PBXFileReference; path = MainViewController.h; sourceTree = "<group>"; };
+		844A2B3E149AF18A00AF1E00 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		844A2B3F149AF18A00AF1E00 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
-		844A2B41149AF18A00AF1E00 /* FlipsideViewController.h */ = {isa = PBXFileReference; path = FlipsideViewController.h; sourceTree = "<group>"; };
+		844A2B41149AF18A00AF1E00 /* FlipsideViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlipsideViewController.h; sourceTree = "<group>"; };
 		844A2B42149AF18A00AF1E00 /* FlipsideViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlipsideViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 

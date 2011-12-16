@@ -12,4 +12,6 @@
 
 @property (strong, nonatomic) UIPopoverController *flipsidePopoverController;
 
+- (IBAction)start:(id)sender;
+- (IBAction)stop:(id)sender;
 @end

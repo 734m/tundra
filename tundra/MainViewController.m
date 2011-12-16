@@ -63,6 +63,16 @@
   }
 }
 
+#pragma mark - torch stuff
+
+- (IBAction)start:(id)sender {
+  NSLog(@"start");
+}
+
+- (IBAction)stop:(id)sender {
+  NSLog(@"stop");
+}
+
 #pragma mark - Flipside View Controller
 
 - (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller
