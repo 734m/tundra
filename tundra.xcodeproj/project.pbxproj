@@ -17,6 +17,7 @@
 		844A2B3D149AF18A00AF1E00 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 844A2B3B149AF18A00AF1E00 /* MainStoryboard_iPad.storyboard */; };
 		844A2B40149AF18A00AF1E00 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 844A2B3F149AF18A00AF1E00 /* MainViewController.m */; };
 		844A2B43149AF18A00AF1E00 /* FlipsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 844A2B42149AF18A00AF1E00 /* FlipsideViewController.m */; };
+		844A2B50149AF93000AF1E00 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 844A2B4F149AF93000AF1E00 /* AVFoundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		844A2B3F149AF18A00AF1E00 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		844A2B41149AF18A00AF1E00 /* FlipsideViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlipsideViewController.h; sourceTree = "<group>"; };
 		844A2B42149AF18A00AF1E00 /* FlipsideViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlipsideViewController.m; sourceTree = "<group>"; };
+		844A2B4F149AF93000AF1E00 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				844A2B50149AF93000AF1E00 /* AVFoundation.framework in Frameworks */,
 				844A2B27149AF18A00AF1E00 /* UIKit.framework in Frameworks */,
 				844A2B29149AF18A00AF1E00 /* Foundation.framework in Frameworks */,
 				844A2B2B149AF18A00AF1E00 /* CoreGraphics.framework in Frameworks */,
@@ -55,6 +58,7 @@
 		844A2B17149AF18A00AF1E00 = {
 			isa = PBXGroup;
 			children = (
+				844A2B4F149AF93000AF1E00 /* AVFoundation.framework */,
 				844A2B2C149AF18A00AF1E00 /* tundra */,
 				844A2B25149AF18A00AF1E00 /* Frameworks */,
 				844A2B23149AF18A00AF1E00 /* Products */,

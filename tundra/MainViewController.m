@@ -7,10 +7,25 @@
 //
 
 #import "MainViewController.h"
+#import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
+
+@interface MainViewController () {
+  AVCaptureSession *torchSession;
+  AVCaptureDevice *device;
+  
+}
+@property (nonatomic, retain) AVCaptureSession * torchSession;
+@property (nonatomic, retain) AVCaptureDevice * device;
+- (void) toggleTorch;
+
+@end
 
 @implementation MainViewController
 
 @synthesize flipsidePopoverController = _flipsidePopoverController;
+@synthesize torchSession;
+@synthesize device;
 
 - (void)didReceiveMemoryWarning
 {
@@ -23,7 +38,82 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+  
+  Class captureDeviceClass = NSClassFromString(@"AVCaptureDevice");
+  if (captureDeviceClass != nil) 
+	{
+    device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    if ([device hasTorch] && [device hasFlash] && device.torchMode == AVCaptureTorchModeOff)
+		{
+			AVCaptureDeviceInput* deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:device error: nil];
+			AVCaptureVideoDataOutput* videoDataOutput = [[AVCaptureVideoDataOutput alloc] init];
+      
+			AVCaptureSession *captureSession = [[AVCaptureSession alloc] init];
+      
+			[captureSession beginConfiguration];
+			[device lockForConfiguration:nil];
+      
+			[captureSession addInput:deviceInput];
+			[captureSession addOutput:videoDataOutput];
+      
+			[device unlockForConfiguration];
+      
+      
+			[captureSession commitConfiguration];
+			[captureSession startRunning];
+      
+			self.torchSession = captureSession;
+    }
+		else {
+			NSLog(@"Torch not available, hasFlash: %d hasTorch: %d torchMode: %d", 
+            device.hasFlash,
+            device.hasTorch,
+            device.torchMode
+            );
+		}
+    
+  }
+	else {
+		NSLog(@"Torch not available, AVCaptureDevice class not found.");
+	}
+  
+//  device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+//  
+//  if ([device hasTorch] && [device hasFlash]){
+//    
+//    if (device.torchMode == AVCaptureTorchModeOff) {
+//      
+//      NSLog(@"It's currently off.. turning on now.");
+//      
+//      AVCaptureDeviceInput *flashInput = [AVCaptureDeviceInput deviceInputWithDevice:device error: nil];
+//      AVCaptureVideoDataOutput *output = [[AVCaptureVideoDataOutput alloc] init];
+//      
+//      AVCaptureSession *session = [[AVCaptureSession alloc] init];
+//      
+//      [session beginConfiguration];
+//      [device lockForConfiguration:nil];
+//            
+//      [session addInput:flashInput];
+//      [session addOutput:output];
+//      
+//      [device unlockForConfiguration];
+//      
+//      
+//      [session commitConfiguration];
+//      [session startRunning];
+//      
+//      [self setTorchSession:session];
+//    }
+//    else {
+//      
+//      NSLog(@"It's currently on.. turning off now.");
+//      
+//      [torchSession stopRunning];
+//      
+//    }
+//    
+//  }
+
 }
 
 - (void)viewDidUnload
@@ -67,10 +157,38 @@
 
 - (IBAction)start:(id)sender {
   NSLog(@"start");
+	Class captureDeviceClass = NSClassFromString(@"AVCaptureDevice");
+	if (captureDeviceClass != nil) {
+    
+		[device lockForConfiguration:nil];
+    
+		[device setTorchMode:AVCaptureTorchModeOn];
+		[device setFlashMode:AVCaptureFlashModeOn];
+    
+		[device unlockForConfiguration];
+    
+	}	
 }
 
 - (IBAction)stop:(id)sender {
   NSLog(@"stop");
+	Class captureDeviceClass = NSClassFromString(@"AVCaptureDevice");
+	if (captureDeviceClass != nil) 
+	{
+		[device lockForConfiguration:nil];
+    
+		[device setTorchMode:AVCaptureTorchModeOff];
+		[device setFlashMode:AVCaptureFlashModeOff];
+    
+		[device unlockForConfiguration];
+  }	
+}
+
+- (void)toggleTorch {
+  [device lockForConfiguration:nil];
+  [device setTorchMode:AVCaptureTorchModeOn];
+  [device setFlashMode:AVCaptureFlashModeOn];
+  [device unlockForConfiguration];
 }
 
 #pragma mark - Flipside View Controller
